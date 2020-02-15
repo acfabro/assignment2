@@ -82,6 +82,7 @@ class SubscriberController extends Controller
 
             // commit transaction
             Connection::instance()->commit();
+            return new Response(201, 'Subscription created', $subscriber);
 
         } catch (\Exception $e) {
             // rollback transaction
@@ -89,11 +90,6 @@ class SubscriberController extends Controller
             return new Response(500, 'Unable to save new subscription: ' . $e->getMessage());
         }
 
-        if (true) {
-            return new Response(201, 'Subscription created');
-        } else {
-            return new Response(500, 'Unable to save new subscription');
-        }
     }
 
     /**
