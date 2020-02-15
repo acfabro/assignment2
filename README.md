@@ -31,8 +31,8 @@ Challenges:
 * [ ] Use Cases - Subscribers
   * [x] Create subscriber
   * [x] Read subscriber
-  * [ ] Update subscriber
-  * [ ] Delete subscriber
+  * [x] Update subscriber
+  * [x] Delete subscriber
 * [ ] Use Cases - management
   * [ ] Subscriber adds field
   * [ ] Subscriber removes field
@@ -79,9 +79,10 @@ Field
 4. just use eloquent for database make it easy to read
 5. keep packages to a minimum
 
-## Differences from actual commercial work
+## Differences of output vs. actual commercial work
 
 1. Framework will be used, any
 2. Logging
 3. Clean architecture
 4. routes file will be divided into groups
+5. will be using more validation rules

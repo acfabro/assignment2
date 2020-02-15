@@ -6,11 +6,14 @@
  */
 
 use Acfabro\Assignment2\Helpers\App;
+use Acfabro\Assignment2\Http\FieldController;
 use Acfabro\Assignment2\Http\Request;
 use Acfabro\Assignment2\Http\Response;
 use Acfabro\Assignment2\Http\Route;
 use Acfabro\Assignment2\Http\SubscriberController;
+use Acfabro\Assignment2\Requests\CreateFieldRequest;
 use Acfabro\Assignment2\Requests\CreateSubscriberRequest;
+use Acfabro\Assignment2\Requests\UpdateFieldRequest;
 use Acfabro\Assignment2\Requests\UpdateSubscriberRequest;
 
 //////////////////////////////////////////////
@@ -70,20 +73,41 @@ Route::delete('/^\/api\/subscriber\/\d+/', function (Request $request) {
 
 //////////////////////////////////////////////
 // create field
-Route::patch('/^\/api\/subscriber\/\d+/', function (Request $request) {
+Route::post('/^\/api\/field/', function (Request $request) {
+    $controller = App::container(FieldController::class);
+    $createFieldRequest = new CreateFieldRequest($request);
+    $result = $createFieldRequest->validate(); // as instructed validate before sending to controller
 
+    // if validation failed
+    if (!$result) {
+        return new Response(400, 'Validation Error');
+    }
+
+    return $controller->create($createFieldRequest);
 });
 
 //////////////////////////////////////////////
 // update field
-Route::patch('/^\/api\/subscriber\/\d+/', function (Request $request) {
+Route::patch('/^\/api\/field\/\d+/', function (Request $request) {
+    $controller = App::container(FieldController::class);
+    $updateFieldRequest = new UpdateFieldRequest($request);
+    $result = $updateFieldRequest->validate(); // as instructed validate before sending to controller
 
+    // if validation failed
+    if (!$result) {
+        return new Response(400, 'Validation Error');
+    }
+
+    return $controller->update($updateFieldRequest);
 });
 
 //////////////////////////////////////////////
 // delete field
-Route::patch('/^\/api\/subscriber\/\d+/', function (Request $request) {
+Route::delete('/^\/api\/field\/\d+/', function (Request $request) {
+    $controller = App::container(FieldController::class);
+    $parts = explode('/', $request->getUri());
 
+    return $controller->delete($parts[3]);
 });
 
 //////////////////////////////////////////////

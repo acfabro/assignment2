@@ -14,17 +14,12 @@ use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 /**
  * Class CreateSubscriberRequest
  *
- * Request object for Create Subscriber Request
+ * Request object for Create Subscriber use case
  *
  * @package Acfabro\Assignment2\Requests
  */
 class UpdateSubscriberRequest extends CreateSubscriberRequest
 {
-    public function __construct($method = 'GET', $uri = '/', $get = [], $post = [], $body = '')
-    {
-        parent::__construct($method, $uri, $get, $post, $body);
-    }
-
     /**
      * returns the ID from the uri path
      * @return mixed
@@ -47,7 +42,7 @@ class UpdateSubscriberRequest extends CreateSubscriberRequest
             throw new ClientSideException('invalid name');
         }
 
-        // check is email is valid
+        // if email is present, check if valid
         // a simple solution is to use a combination of regex and checkdnsrr()
         if ($this->hasParam('email')) {
             $emailValidator = new EmailValidator();
@@ -62,6 +57,7 @@ class UpdateSubscriberRequest extends CreateSubscriberRequest
                 throw new ClientSideException('email is invalid');
             }
         }
+
         return true;
     }
 }

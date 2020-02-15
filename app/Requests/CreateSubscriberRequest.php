@@ -16,17 +16,12 @@ use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 /**
  * Class CreateSubscriberRequest
  *
- * Request object for Create Subscriber Request
+ * Request object for Create Subscriber use case
  *
  * @package Acfabro\Assignment2\Requests
  */
 class CreateSubscriberRequest extends Request
 {
-    public function __construct($method = 'GET', $uri = '/', $get = [], $post = [], $body = '')
-    {
-        parent::__construct($method, $uri, $get, $post, $body);
-    }
-
     /**
      * Validate the request. May be called before injecting into a controller
      * @note would normally use a validation package
@@ -35,23 +30,21 @@ class CreateSubscriberRequest extends Request
     public function validate()
     {
         // check if name is present
-        if ($this->hasParam('name') && strlen($this->getParam('name')) == 0) {
+        if (strlen($this->getParam('name')) == 0) {
             throw new ClientSideException('Please enter a valid name');
         }
 
         // check is email is valid
-        if ($this->hasParam('name')) {
-            $emailValidator = new EmailValidator();
-            if (!$emailValidator->isValid(
-                $this->getParam('email'),
-                new MultipleValidationWithAnd([
-                    new RFCValidation(),
-                    new DNSCheckValidation(),
-                    new SpoofCheckValidation(),
-                ])
-            )) {
-                throw new ClientSideException('email is invalid');
-            }
+        $emailValidator = new EmailValidator();
+        if (!$emailValidator->isValid(
+            $this->getParam('email'),
+            new MultipleValidationWithAnd([
+                new RFCValidation(),
+                new DNSCheckValidation(),
+                new SpoofCheckValidation(),
+            ])
+        )) {
+            throw new ClientSideException('email is invalid');
         }
 
         // check if email is in db already
