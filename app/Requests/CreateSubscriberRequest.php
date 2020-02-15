@@ -44,7 +44,7 @@ class CreateSubscriberRequest extends Request
                 new SpoofCheckValidation(),
             ])
         )) {
-            throw new ClientSideException('email is invalid');
+            throw new ClientSideException('Please enter a valid email address');
         }
 
         // check if email is in db already

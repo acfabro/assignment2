@@ -45,7 +45,7 @@ class SubscriberController extends Controller
             ->get();
 
         // response
-        if ($found) {
+        if ($found->count()) {
             return new Response(200, null, $found);
         } else {
             return new Response(404, 'Subscriber not found');
