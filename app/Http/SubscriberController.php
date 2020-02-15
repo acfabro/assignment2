@@ -82,14 +82,13 @@ class SubscriberController extends Controller
 
             // commit transaction
             Connection::instance()->commit();
-            return new Response(201, 'subscriber created', $subscriber);
+            return new Response(201, 'Subscriber created', $subscriber);
 
         } catch (\Exception $e) {
             // rollback transaction
             Connection::instance()->rollBack();
             return new Response(500, 'Unable to save new subscriber: ' . $e->getMessage());
         }
-
     }
 
     /**
@@ -114,12 +113,41 @@ class SubscriberController extends Controller
 
             // commit transaction
             Connection::instance()->commit();
-            return new Response(201, 'subscriber updated', $subscriber);
+            return new Response(201, 'Subscriber updated', $subscriber);
 
         } catch (\Exception $e) {
             // rollback transaction
             Connection::instance()->rollBack();
             return new Response(500, 'Unable to save updates to subscriber: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param int $id delete a subscriber
+     * @return Response
+     * @throws \Exception
+     */
+    public function delete($id) {
+        try {
+            // start a db transaction
+            Connection::instance()->beginTransaction();
+
+            // delete subscribers and fields
+            $subscriber = Subscriber::find($id);
+            if (!$subscriber) return new Response(404, 'Subscriber not found');
+            $subscriber->delete();
+
+            // delete fields
+            Field::where('subscriber_id', $id)->delete();
+
+            // commit transaction
+            Connection::instance()->commit();
+            return new Response(200, 'Subscriber deleted');
+
+        } catch (\Exception $e) {
+            // rollback transaction
+            Connection::instance()->rollBack();
+            return new Response(500, 'Unable to delete subscriber: ' . $e->getMessage());
         }
     }
 
