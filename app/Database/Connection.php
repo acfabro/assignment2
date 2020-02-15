@@ -27,7 +27,7 @@ class Connection
         if (!empty(self::$instance)) return self::$instance;
 
         // otherwise make new
-        $capsule = new Capsule;
+        $capsule = new Capsule();
         $capsule->addConnection([
             'database' => Env::get('DB_NAME', 'mailerlite'),
             'username' => Env::get('DB_USERNAME', 'homestead'),

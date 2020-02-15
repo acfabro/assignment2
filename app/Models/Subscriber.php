@@ -5,6 +5,7 @@ namespace Acfabro\Assignment2\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 /**
@@ -33,7 +34,7 @@ class Subscriber extends Model
 
     /**
      * The subscriber's fields
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function fields()
     {

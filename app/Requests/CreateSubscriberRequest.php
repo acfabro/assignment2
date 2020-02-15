@@ -51,7 +51,7 @@ class CreateSubscriberRequest extends Request
                 ])
             )) {
                 throw new ClientSideException('email is invalid');
-            };
+            }
         }
 
         // check if email is in db already

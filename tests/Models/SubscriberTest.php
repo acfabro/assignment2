@@ -48,7 +48,7 @@ class SubscriberTest extends AppTestCase
     protected $data = [
         'name' => 'Jake Peralta',
         'email' => 'jake@nine-nine.com',
-        'state' => \Acfabro\Assignment2\Models\Subscriber::STATUS_ACTIVE,
+        'state' => Subscriber::STATUS_ACTIVE,
     ];
 
     protected $dataWithFields = [

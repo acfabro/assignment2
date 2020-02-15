@@ -9,6 +9,7 @@ use Acfabro\Assignment2\Http\Request;
 use Acfabro\Assignment2\Http\Response;
 use Acfabro\Assignment2\Http\Route;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /**
  * Class App
@@ -25,7 +26,7 @@ class App
      * Get an item from the container
      * @param string $item name of container item to return if any. if null, it wil return the container instance
      * @return Container
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public static function container($item = null)
     {
