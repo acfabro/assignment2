@@ -63,10 +63,10 @@ class SubscriberController extends Controller
     {
         $data = $request->toArray();
 
-        // start a db transaction
-        Connection::instance()->beginTransaction();
-
         try {
+            // start a db transaction
+            Connection::instance()->beginTransaction();
+
             // save subscriber
             $subscriber = new Subscriber($data);
             $subscriber->save();
@@ -82,30 +82,44 @@ class SubscriberController extends Controller
 
             // commit transaction
             Connection::instance()->commit();
-            return new Response(201, 'Subscription created', $subscriber);
+            return new Response(201, 'subscriber created', $subscriber);
 
         } catch (\Exception $e) {
             // rollback transaction
             Connection::instance()->rollBack();
-            return new Response(500, 'Unable to save new subscription: ' . $e->getMessage());
+            return new Response(500, 'Unable to save new subscriber: ' . $e->getMessage());
         }
 
     }
 
     /**
-     * Update a subscription
+     * Update a subscriber
      * @param UpdateSubscriberRequest $request
      * @param $id
      * @return Response
+     * @throws \Exception
      */
     public function update(UpdateSubscriberRequest $request, $id)
     {
-        $subscriber = Subscriber::find($id);
-        $subscriber->fill($request->toArray());
-        if ($subscriber->save()) {
-            return new Response(200, 'Subscription updated');
-        } else {
-            return new Response(500, 'Unable to update subscription');
+        $data = $request->toArray();
+
+        try {
+            // start a db transaction
+            Connection::instance()->beginTransaction();
+
+            // save subscriber
+            $subscriber = Subscriber::find($id);
+            $subscriber->fill($data);
+            $subscriber->save();
+
+            // commit transaction
+            Connection::instance()->commit();
+            return new Response(201, 'subscriber updated', $subscriber);
+
+        } catch (\Exception $e) {
+            // rollback transaction
+            Connection::instance()->rollBack();
+            return new Response(500, 'Unable to save updates to subscriber: ' . $e->getMessage());
         }
     }
 

@@ -55,7 +55,7 @@ Route::patch('/^\/api\/subscriber\/\d+/', function (Request $request) {
         return new Response(400, 'Validation Error');
     }
 
-    return $controller->create($updateSubscriberRequest, $updateSubscriberRequest->getId());
+    return $controller->update($updateSubscriberRequest, $updateSubscriberRequest->getId());
 });
 
 // delete subscriber

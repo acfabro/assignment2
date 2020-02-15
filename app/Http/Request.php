@@ -157,7 +157,7 @@ class Request
     public function getParam($name)
     {
         $array = $this->toArray();
-        return $array[$name];
+        return @$array[$name];
     }
 
     /**
