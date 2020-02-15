@@ -6,7 +6,6 @@
 
 use Acfabro\Assignment2\Database\Connection;
 use Acfabro\Assignment2\Helpers\App;
-use Acfabro\Assignment2\Http\Routing;
 use Symfony\Component\Dotenv\Dotenv;
 
 /////////////////////

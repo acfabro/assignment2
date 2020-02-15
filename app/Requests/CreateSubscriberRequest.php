@@ -28,25 +28,6 @@ class CreateSubscriberRequest extends Request
     }
 
     /**
-     * get the body in json decoded to array
-     * @return array
-     */
-    public function toArray()
-    {
-        return (array)json_decode($this->body);
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     */
-    public function getParam($name)
-    {
-        $array = $this->toArray();
-        return $array[$name];
-    }
-
-    /**
      * Validate the request. May be called before injecting into a controller
      * @note would normally use a validation package
      * @throws ClientSideException
@@ -54,22 +35,24 @@ class CreateSubscriberRequest extends Request
     public function validate()
     {
         // check if name is present
-        if (!$this->getParam('name')) {
-            throw new ClientSideException('name is required');
+        if ($this->hasParam('name') && strlen($this->getParam('name')) == 0) {
+            throw new ClientSideException('Please enter a valid name');
         }
 
         // check is email is valid
-        $emailValidator = new EmailValidator();
-        if (!$emailValidator->isValid(
-            $this->getParam('email'),
-            new MultipleValidationWithAnd([
-                new RFCValidation(),
-                new DNSCheckValidation(),
-                new SpoofCheckValidation(),
-            ])
-        )) {
-            throw new ClientSideException('email is invalid');
-        };
+        if ($this->hasParam('name')) {
+            $emailValidator = new EmailValidator();
+            if (!$emailValidator->isValid(
+                $this->getParam('email'),
+                new MultipleValidationWithAnd([
+                    new RFCValidation(),
+                    new DNSCheckValidation(),
+                    new SpoofCheckValidation(),
+                ])
+            )) {
+                throw new ClientSideException('email is invalid');
+            };
+        }
 
         // check if email is in db already
         $subscriber = Subscriber::where('email', $this->getParam('email'))->get();

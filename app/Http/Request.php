@@ -139,4 +139,36 @@ class Request
     {
         return @array_merge($this->post, $this->get)[$name];
     }
+
+    /**
+     * get the body in json decoded to array
+     * @return array
+     */
+    public function toArray()
+    {
+        return (array)json_decode($this->body);
+    }
+
+    /**
+     * Returns a param passed in the request body
+     * @param $name
+     * @return mixed
+     */
+    public function getParam($name)
+    {
+        $array = $this->toArray();
+        return $array[$name];
+    }
+
+    /**
+     * Tells if a param exists
+     * @param $name
+     * @return bool
+     */
+    public function hasParam($name)
+    {
+        $array = $this->toArray();
+        return isset($array[$name]);
+    }
+
 }

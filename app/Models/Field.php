@@ -31,10 +31,9 @@ class Field extends Model
 
     /**
      * The field's aggregate subscriber model
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    protected function subscriber()
+    public function subscriber()
     {
-        return $this->hasOne(Subscriber::class, 'subscriber_id', 'id');
+        return $this->belongsTo(Subscriber::class, 'subscriber_id', 'id');
     }
 }

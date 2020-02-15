@@ -4,8 +4,11 @@
 namespace Acfabro\Assignment2\Http;
 
 
+use Acfabro\Assignment2\Database\Connection;
+use Acfabro\Assignment2\Models\Field;
 use Acfabro\Assignment2\Models\Subscriber;
 use Acfabro\Assignment2\Requests\CreateSubscriberRequest;
+use Acfabro\Assignment2\Requests\UpdateSubscriberRequest;
 
 /**
  * Class SubscriberController
@@ -54,13 +57,60 @@ class SubscriberController extends Controller
      *
      * @param CreateSubscriberRequest $request
      * @return Response
+     * @throws \Exception
      */
     public function create(CreateSubscriberRequest $request)
     {
-        $subcriber = new Subscriber($request->toArray());
-        $subcriber->save();
+        $data = $request->toArray();
 
-        return new Response(201, 'Suibscription created');
+        // start a db transaction
+        Connection::instance()->beginTransaction();
+
+        try {
+            // save subscriber
+            $subscriber = new Subscriber($data);
+            $subscriber->save();
+
+            // save fields if any
+            if (isset($data['fields']) && is_array($data['fields'])) {
+                foreach ($data['fields'] as $row) {
+                    $newField = new Field((array)$row);
+                    $newField->subscriber()->associate($subscriber);
+                    $newField->save();
+                }
+            }
+
+            // commit transaction
+            Connection::instance()->commit();
+
+        } catch (\Exception $e) {
+            // rollback transaction
+            Connection::instance()->rollBack();
+            return new Response(500, 'Unable to save new subscription: ' . $e->getMessage());
+        }
+
+        if (true) {
+            return new Response(201, 'Subscription created');
+        } else {
+            return new Response(500, 'Unable to save new subscription');
+        }
+    }
+
+    /**
+     * Update a subscription
+     * @param UpdateSubscriberRequest $request
+     * @param $id
+     * @return Response
+     */
+    public function update(UpdateSubscriberRequest $request, $id)
+    {
+        $subscriber = Subscriber::find($id);
+        $subscriber->fill($request->toArray());
+        if ($subscriber->save()) {
+            return new Response(200, 'Subscription updated');
+        } else {
+            return new Response(500, 'Unable to update subscription');
+        }
     }
 
 }

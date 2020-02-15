@@ -20,7 +20,6 @@ class Connection
 
     /**
      * Database connection singleton
-     * @return mixed
      */
     public static function instance()
     {
@@ -41,6 +40,6 @@ class Connection
         ]);
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-        return self::$instance = "";
+        return self::$instance = $capsule->getConnection();
     }
 }

@@ -79,7 +79,7 @@ class App
 
         } catch (\Exception $e) {
             // 5xx errors
-            $response = new Response($e->getCode(), $e->getMessage());
+            $response = new Response(400, $e->getMessage());
             $response->render();
 
         }

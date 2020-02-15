@@ -37,6 +37,28 @@ class Subscriber extends Model
      */
     public function fields()
     {
-        return $this->hasMany(Field::class, 'subscriber_id');
+        return $this->hasMany(Field::class, 'subscriber_id', 'id');
     }
+
+    /**
+     * Override fill so we can take care of the fields
+     * @param array $attributes
+     * @return Model|void
+     */
+    public function fill(array $attributes)
+    {
+        // fill this model with the data
+        $result = parent::fill($attributes);
+
+        // fill the dependent fields models with data
+//        if (isset($attributes['fields']) && is_array($attributes['fields'])) {
+//            foreach ($attributes['fields'] as $row) {
+//                $newField = new Field((array)$row);
+//                $this->fields()->create((array)$row);
+//            }
+//        }
+
+        return $result;
+    }
+
 }

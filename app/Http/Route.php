@@ -7,7 +7,7 @@ namespace Acfabro\Assignment2\Http;
 /**
  * Class Route
  *
- * Registry of routes configured in routes.php
+ * Use this to register routes
  *
  * @package Acfabro\Assignment2\Http
  */
@@ -133,6 +133,7 @@ class Route
      */
     public static function resolve(Request $request)
     {
+        // foreach of the routes defined using Route::method()
         foreach (self::instance()->getRoutes() as $route) {
             // check each part
             if (
@@ -147,7 +148,7 @@ class Route
         }
 
         // none found, return the default callable
-        return  self::instance()->default;
+        return self::instance()->default;
     }
 
 }

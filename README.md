@@ -1,3 +1,14 @@
+# Programming assignment
+
+Challenges:
+1. No framework, only packages allowed
+2. Object relation modeling
+3. JSON REST API
+4. Frontend to use the APIs
+5. Time constrained
+6. Optional: redis and unit tests
+7. As instructed "Validate request before calling the controller"
+
 ## Tasks
 
 **Prep:**
@@ -18,8 +29,8 @@
   * [ ] Update field
   * [ ] Delete field
 * [ ] Use Cases - Subscribers
-  * [ ] Create subscriber
-  * [ ] Read subscriber
+  * [x] Create subscriber
+  * [x] Read subscriber
   * [ ] Update subscriber
   * [ ] Delete subscriber
 * [ ] Use Cases - management
@@ -62,6 +73,15 @@ Field
 
 ## Strategy
 
-1. avoid using framework HTTP classes
-2. just use eloquent for database
-3. keep packages to a minimum
+1. do not use a framework, as instructed
+2. READABILITY is key
+3. avoid framework http classes, need to write my own
+4. just use eloquent for database make it easy to read
+5. keep packages to a minimum
+
+## Differences from actual commercial work
+
+1. Framework will be used, any
+2. Logging
+3. Clean architecture
+4. routes file will be divided into groups
