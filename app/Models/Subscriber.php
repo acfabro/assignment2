@@ -9,7 +9,6 @@ use Acfabro\Assignment2\Error\ServerSideException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * Class Subscriber
@@ -34,10 +33,6 @@ class Subscriber extends Model
     protected $table = "subscribers";
 
     protected $fillable = ['name', 'email', 'state'];
-
-    // cache queries to redis
-    use QueryCacheable;
-    protected $cacheFor = 180; // 3 minutes
 
     /**
      * The subscriber's fields

@@ -6,6 +6,13 @@ namespace Acfabro\Assignment2\Helpers;
 
 use Redis;
 
+/**
+ * Class RedisCache
+ *
+ * Wrapper for phpredis. aim is to make this operate as quietly as possible
+ *
+ * @package Acfabro\Assignment2\Helpers
+ */
 class RedisCache
 {
     /**
@@ -13,13 +20,29 @@ class RedisCache
      */
     protected $redis;
 
-    public function __construct()
+    public function connect()
     {
-        $this->redis = new Redis();
-        $this->redis->connect(
-            Env::get('REDIS_STRING', '127.0.0.1'),
-            Env::get('REDIS_PORT', 6379)
-        );
+        try {
+            $this->redis = new Redis();
+            return $this->redis->connect(
+                Env::get('REDIS_STRING', '127.0.0.1'),
+                Env::get('REDIS_PORT', 6379)
+            );
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public function set($name, $value, $options=['ex'=>300])
+    {
+        if (!$this->redis) $this->connect();
+        return $this->redis->set($name, $value, $options);
+    }
+
+    public function get($name)
+    {
+        if (!$this->redis) $this->connect();
+        return $this->redis->get($name);
     }
 
     protected static $instance;
@@ -27,6 +50,7 @@ class RedisCache
     public static function instance()
     {
         if (!self::$instance) self::$instance = new RedisCache();
+        return self::$instance;
     }
 
 }

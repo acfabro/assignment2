@@ -4,6 +4,7 @@
 namespace Acfabro\Assignment2\Http;
 
 
+use Acfabro\Assignment2\Helpers\RedisCache;
 use Acfabro\Assignment2\Models\Subscriber;
 use Acfabro\Assignment2\Requests\CreateSubscriberRequest;
 use Acfabro\Assignment2\Requests\UpdateSubscriberRequest;
@@ -37,6 +38,13 @@ class SubscriberController extends Controller
      */
     public function read($id)
     {
+        // check the cache and return the result if in cache
+        $cacheKey = "subscriber-{$id}";
+        $data = RedisCache::instance()->get($cacheKey);
+        if (!empty($data)) {
+            return new Response(200, null, unserialize($data));
+        }
+
         // find the subscriber include the fields
         $found = Subscriber::with('fields')
             ->where('id', $id)
@@ -44,7 +52,9 @@ class SubscriberController extends Controller
             ->first();
 
         // response
-        if ($found->count()) {
+        if (!empty($found) && $found->count()) {
+            // save to cache
+            RedisCache::instance()->set($cacheKey, serialize($found));
             return new Response(200, null, $found);
         } else {
             return new Response(404, 'Subscriber not found');

@@ -5,7 +5,6 @@ namespace Acfabro\Assignment2\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * Class Field
@@ -29,10 +28,6 @@ class Field extends Model
     protected $table = "fields";
 
     protected $fillable = ['title', 'type', 'value'];
-
-    // cache queries to redis
-    use QueryCacheable;
-    protected $cacheFor = 180; // 3 minutes
 
     /**
      * The field's aggregate subscriber model
