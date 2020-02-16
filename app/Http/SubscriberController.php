@@ -4,8 +4,6 @@
 namespace Acfabro\Assignment2\Http;
 
 
-use Acfabro\Assignment2\Database\Connection;
-use Acfabro\Assignment2\Models\Field;
 use Acfabro\Assignment2\Models\Subscriber;
 use Acfabro\Assignment2\Requests\CreateSubscriberRequest;
 use Acfabro\Assignment2\Requests\UpdateSubscriberRequest;
@@ -61,34 +59,12 @@ class SubscriberController extends Controller
      */
     public function create(CreateSubscriberRequest $request)
     {
+        // create a new object, fill with data and save
         $data = $request->toArray();
+        $subscriber = new Subscriber($data);
+        $subscriber->save();
 
-        try {
-            // start a db transaction
-            Connection::instance()->beginTransaction();
-
-            // save subscriber
-            $subscriber = new Subscriber($data);
-            $subscriber->save();
-
-            // save fields if any
-            if (isset($data['fields']) && is_array($data['fields'])) {
-                foreach ($data['fields'] as $row) {
-                    $newField = new Field((array)$row);
-                    $newField->subscriber()->associate($subscriber);
-                    $newField->save();
-                }
-            }
-
-            // commit transaction
-            Connection::instance()->commit();
-            return new Response(201, 'Subscriber created', $subscriber);
-
-        } catch (\Exception $e) {
-            // rollback transaction
-            Connection::instance()->rollBack();
-            return new Response(500, 'Unable to save new subscriber: ' . $e->getMessage());
-        }
+        return new Response(201, 'Subscriber created', $subscriber);
     }
 
     /**
@@ -102,24 +78,15 @@ class SubscriberController extends Controller
     {
         $data = $request->toArray();
 
-        try {
-            // start a db transaction
-            Connection::instance()->beginTransaction();
+        // find the object to update
+        $subscriber = Subscriber::find($id);
+        if (!$subscriber) return new Response(404, 'Subscriber not found');
 
-            // save subscriber
-            $subscriber = Subscriber::find($id);
-            $subscriber->fill($data);
-            $subscriber->save();
+        // fill with data and save
+        $subscriber->fill($data);
+        $subscriber->save();
 
-            // commit transaction
-            Connection::instance()->commit();
-            return new Response(201, 'Subscriber updated', $subscriber);
-
-        } catch (\Exception $e) {
-            // rollback transaction
-            Connection::instance()->rollBack();
-            return new Response(500, 'Unable to save updates to subscriber: ' . $e->getMessage());
-        }
+        return new Response(200, 'Subscriber updated', $subscriber);
     }
 
     /**
@@ -128,27 +95,14 @@ class SubscriberController extends Controller
      * @throws \Exception
      */
     public function delete($id) {
-        try {
-            // start a db transaction
-            Connection::instance()->beginTransaction();
+        // find the object to delete
+        $subscriber = Subscriber::find($id);
+        if (!$subscriber) return new Response(404, 'Subscriber not found');
 
-            // delete subscribers and fields
-            $subscriber = Subscriber::find($id);
-            if (!$subscriber) return new Response(404, 'Subscriber not found');
-            $subscriber->delete();
+        // delete
+        $subscriber->delete();
 
-            // delete fields
-            Field::where('subscriber_id', $id)->delete();
-
-            // commit transaction
-            Connection::instance()->commit();
-            return new Response(200, 'Subscriber deleted');
-
-        } catch (\Exception $e) {
-            // rollback transaction
-            Connection::instance()->rollBack();
-            return new Response(500, 'Unable to delete subscriber: ' . $e->getMessage());
-        }
+        return new Response(200, 'Subscriber deleted');
     }
 
 }
