@@ -58,6 +58,11 @@ class UpdateSubscriberRequest extends CreateSubscriberRequest
             }
         }
 
+        // check if state is valid
+        if (strlen($this->getParam('state')) == 0) {
+            throw new ClientSideException('State is required');
+        }
+
         return true;
     }
 }
