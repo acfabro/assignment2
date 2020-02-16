@@ -4,6 +4,7 @@
 namespace Acfabro\Assignment2\Http;
 
 
+use Acfabro\Assignment2\Helpers\RedisCache;
 use Acfabro\Assignment2\Models\Field;
 use Acfabro\Assignment2\Requests\CreateFieldRequest;
 use Acfabro\Assignment2\Requests\UpdateFieldRequest;
@@ -63,6 +64,11 @@ class FieldController extends Controller
         $field = Field::find($id);
         if (!$field) return new Response(404, 'Field not found');
         if ($field->delete()) {
+            // get the associated subscriber and save to cache
+            $subscriber = $field->subscriber;
+            RedisCache::instance()->del("subscriber-{$subscriber->id}");
+
+            // return
             return new Response(200, 'Field deleted');
         } else {
             return new Response(500, 'Field could not be deleted');

@@ -53,6 +53,16 @@ class RedisCache
         }
     }
 
+    public function del($name)
+    {
+        try {
+            if (!$this->redis) $this->connect();
+            return $this->redis->del($name);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
     protected static $instance;
 
     public static function instance()
