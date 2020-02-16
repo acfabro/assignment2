@@ -63,6 +63,9 @@ class UpdateSubscriberRequest extends CreateSubscriberRequest
             throw new ClientSideException('State is required');
         }
 
+        // validate the embedded fields
+        $this->validateFields($this->getParam('fields'));
+
         return true;
     }
 }

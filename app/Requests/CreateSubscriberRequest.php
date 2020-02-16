@@ -38,11 +38,13 @@ class CreateSubscriberRequest extends Request
         $emailValidator = new EmailValidator();
         if (!$emailValidator->isValid(
             $this->getParam('email'),
-            new MultipleValidationWithAnd([
-                new RFCValidation(),
-                new DNSCheckValidation(),
-                new SpoofCheckValidation(),
-            ])
+            new MultipleValidationWithAnd(
+                [
+                    new RFCValidation(),
+                    new DNSCheckValidation(),
+                    new SpoofCheckValidation(),
+                ]
+            )
         )) {
             throw new ClientSideException('Please enter a valid email address');
         }
@@ -58,6 +60,24 @@ class CreateSubscriberRequest extends Request
             throw new ClientSideException('State is required');
         }
 
+        // validate the embedded fields
+        $this->validateFields($this->getParam('fields'));
+
         return true;
+    }
+
+    /**
+     * Validate the fields in the parameters
+     * @param $fields
+     * @throws ClientSideException
+     */
+    protected function validateFields($fields)
+    {
+        if ($fields) {
+            foreach ($fields as $field) {
+                $fieldRequest = new CreateFieldRequest($this->getMethod(), '', [], [], json_encode($field));
+                $fieldRequest->validate();
+            }
+        }
     }
 }
