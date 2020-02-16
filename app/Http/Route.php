@@ -85,6 +85,18 @@ class Route
     }
 
     /**
+     * Create a patch route
+     * @param $route
+     * @param $callable
+     */
+    public static function options($route, $callable)
+    {
+        self::instance()->routes[] = [
+            'OPTIONS', $route, $callable
+        ];
+    }
+
+    /**
      * Create the default route
      * @param $callable
 

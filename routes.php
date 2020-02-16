@@ -111,6 +111,12 @@ Route::delete('/^\/api\/field\/\d+/', function (Request $request) {
 });
 
 //////////////////////////////////////////////
+// options field, any request
+Route::options('/.*/', function (Request $request) {
+    return new Response(200);
+});
+
+//////////////////////////////////////////////
 // all other routes exhausted, so this must be 404
 Route::default(function () {
     return new Response(404, 'Route not found');
