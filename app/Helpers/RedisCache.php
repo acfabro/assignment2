@@ -35,14 +35,22 @@ class RedisCache
 
     public function set($name, $value, $options=['ex'=>300])
     {
-        if (!$this->redis) $this->connect();
-        return $this->redis->set($name, $value, $options);
+        try {
+            if (!$this->redis) $this->connect();
+            return $this->redis->set($name, $value, $options);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function get($name)
     {
-        if (!$this->redis) $this->connect();
-        return $this->redis->get($name);
+        try {
+            if (!$this->redis) $this->connect();
+            return $this->redis->get($name);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     protected static $instance;

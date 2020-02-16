@@ -75,6 +75,10 @@ class SubscriberController extends Controller
         $subscriber = new Subscriber($data);
         $subscriber->save();
 
+        // save to cache
+        $cacheKey = "subscriber-{$subscriber->id}";
+        RedisCache::instance()->set($cacheKey, serialize($subscriber));
+
         return new Response(201, 'Subscriber created', $subscriber);
     }
 
@@ -96,6 +100,10 @@ class SubscriberController extends Controller
         // fill with data and save
         $subscriber->fill($data);
         $subscriber->save();
+
+        // save to cache
+        $cacheKey = "subscriber-{$subscriber->id}";
+        RedisCache::instance()->set($cacheKey, serialize($subscriber));
 
         return new Response(200, 'Subscriber updated', $subscriber);
     }
