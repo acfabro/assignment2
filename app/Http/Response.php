@@ -143,6 +143,9 @@ class Response
     {
         // render headers
         header("HTTP/1.1 {$this->getCode()} {$this->getMessage()}", false);
+
+        // content type
+        $this->enableContentTypeJson();
         foreach ($this->headers as $key => $header) {
             header("{$key}: {$header}", false);
         }
@@ -155,5 +158,26 @@ class Response
         // echo
         echo json_encode($output);
     }
+
+    /**
+     * Enable cors. Enable ALL cors for this exercise for now
+     */
+    public function enableCors()
+    {
+        $this->setHeader('Access-Control-Allow-Origin','*');
+        $this->setHeader('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE, HEAD');
+        $this->setHeader('Access-Control-Allow-Headers','*');
+        $this->setHeader('Access-Control-Max-Age', 86400);
+    }
+
+    /**
+     * Enable cors. Enable ALL cors for this exercise for now
+     */
+    public function enableContentTypeJson()
+    {
+        $this->setHeader('Content-Type','application/json');
+    }
+
+
 
 }

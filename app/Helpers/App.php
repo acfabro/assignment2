@@ -64,11 +64,7 @@ class App
             $response = $callable($request);
 
             // set cors, content type
-            $response->setHeader('Content-Type','application/json');
-            $response->setHeader('Access-Control-Allow-Origin','*');
-            $response->setHeader('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE, HEAD');
-            $response->setHeader('Access-Control-Allow-Headers','*');
-            $response->setHeader('Access-Control-Max-Age', 86400);
+            $response->enableCors();
 
             // render the output
             $response->render();
@@ -76,11 +72,13 @@ class App
         } catch (ClientSideException $e) {
             // 4xx errors
             $response = new Response($e->getCode(), $e->getMessage());
+            $response->enableCors();
             $response->render();
 
         } catch (\Exception $e) {
             // 5xx errors
             $response = new Response(400, $e->getMessage());
+            $response->enableCors();
             $response->render();
 
         }
