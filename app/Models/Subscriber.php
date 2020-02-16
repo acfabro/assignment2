@@ -128,7 +128,7 @@ class Subscriber extends Model
             }
 
             // delete this
-            $this->delete();
+            parent::delete();
 
             Connection::instance()->commit();
             return true;
