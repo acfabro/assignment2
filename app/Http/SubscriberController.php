@@ -40,7 +40,8 @@ class SubscriberController extends Controller
         // find the subscriber include the fields
         $found = Subscriber::with('fields')
             ->where('id', $id)
-            ->get();
+            ->get()
+            ->first();
 
         // response
         if ($found->count()) {
