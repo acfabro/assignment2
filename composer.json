@@ -24,7 +24,6 @@
         "illuminate/database": "^6.15",
         "egulias/email-validator": "^2.1",
         "ext-json": "*",
-        "rennokki/laravel-eloquent-query-cache": "^1.2",
         "ext-redis": "*"
     },
     "require-dev": {
