@@ -23,38 +23,25 @@ Challenges:
   * [x] Fields
   * [x] Subscribers
   * [x] Entity relationship problem
-* [ ] Use Cases - Fields
-  * [ ] Create field
-  * [ ] Read field
-  * [ ] Update field
-  * [ ] Delete field
-* [ ] Use Cases - Subscribers
+* [x] Use Cases - Fields
+  * [x] Create field
+  * [x] Read field
+  * [x] Update field
+  * [x] Delete field
+* [x] Use Cases - Subscribers
   * [x] Create subscriber
   * [x] Read subscriber
   * [x] Update subscriber
   * [x] Delete subscriber
-* [ ] Use Cases - management
-  * [ ] Subscriber adds field
-  * [ ] Subscriber removes field
+* [x] Use Cases - management
+  * [x] Subscriber adds field
+  * [x] Subscriber removes field
   
-**Frontend:**
-
-* [ ] Manage fields
-  * [ ] Create field
-  * [ ] Read field
-  * [ ] Update field
-  * [ ] Delete field
-* [ ] Manage subscribers
-  * [ ] Create field
-  * [ ] Read field
-  * [ ] Update field
-  * [ ] Delete field
-
 **Optionals:**
 
-* [ ] Unit Tests
-* [ ] Add Redis to repositories
-* [ ] Dockerize the test app
+* [x] Unit Tests
+* [x] Add Redis to repositories
+* [x] Dockerize the test app
 
 ## Data model
 
