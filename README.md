@@ -67,6 +67,7 @@ Route::post('/^\/api\/field/', function (Request $request) {
         return new Response(400, 'Validation Error');
     }
 
+    // now we can call the controller
     return $controller->create($createFieldRequest);
 });
 ```
